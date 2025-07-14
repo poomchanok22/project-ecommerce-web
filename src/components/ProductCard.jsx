@@ -1,6 +1,27 @@
 import React from 'react'
+import useCartStore from '../stores/cartStore'
+import useUserStore from '../stores/userStore'
+import { toast } from 'react-toastify'
 
-function ProductCard({image, name, description, price, stock, }) {
+
+function ProductCard({product_id, image, name, description, price, stock, }) {
+  const token = useUserStore(state => state.token)
+  const addToCart = useCartStore(state => state.addToCart)
+
+const hdlAddToCart = async () => {
+  try {
+    await addToCart(product_id, 1, token)
+    toast.success("เพิ่มสินค้าลงตะกร้าแล้ว")
+  } catch (err) {
+    toast.error("เกิดข้อผิดพลาดในการเพิ่มสินค้า")
+    console.error(err)
+  }
+}
+
+
+
+
+
   return (
     <div className="w-96 relative shadow-2xl mx-auto my-12 rounded-lg overflow-hidden group">
   
@@ -24,7 +45,7 @@ function ProductCard({image, name, description, price, stock, }) {
         <p className="text-sm font-normal text-red-600 mr-2">ราคา {price} บาท</p>
       </div>
       <div className="space-x-2">
-        <button className='btn btn-neutral'>Add to Cart</button>
+        <button className='btn btn-neutral' onClick={hdlAddToCart}>Add to Cart</button>
       </div>
     </div>
   </div>

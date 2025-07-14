@@ -10,6 +10,7 @@ const Cart = lazy(()=> import("../pages/Cart"))
 const Payment = lazy(()=> import("../pages/Payment"))
 const Order = lazy(()=> import("../pages/Order"))
 const ShopAdmin = lazy(() => import("../pages/ShopAdmin"))
+const PaymentSuccess = lazy(() => import("../pages/PaymentSuccessPage"))
 
 
 const guestRouter = createBrowserRouter([
@@ -26,6 +27,7 @@ const userRouter = createBrowserRouter([
       {path: "cart", element:<Cart />},
       {path: "payment", element:<Payment />},
       {path: "order", element:<Order />},
+      {path: "payment-success", element: <PaymentSuccess />},
       {path: "*", element: <Navigate to='/' />}
     ]
   }

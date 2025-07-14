@@ -35,7 +35,7 @@ useEffect(()=> {
       </div>
       <div className='flex-4/5 flex gap-10 flex-wrap mt-10 justify-center'>
       {product.map((product)=>(
-        <ProductCard key={product.product_id} image={product.image} name={product.name} description={product.description} price={product.price} stock={product.stock}/>
+        <ProductCard key={product.product_id} product_id={product.product_id} image={product.image} name={product.name} description={product.description} price={product.price} stock={product.stock}/>
       ))}
       
       

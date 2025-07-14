@@ -10,6 +10,9 @@ export default function HomePage() {
   const product = useProductStore(state => state.product)
   const fetchProducts = useProductStore(state => state.fetchProducts)
   const token = useUserStore(state => state.token)
+  
+
+
 
   useEffect(() =>{
     fetchProducts(token)
@@ -35,7 +38,7 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold tracking-widest mb-10">FEATURED PRODUCTS</h2>
         <div className="flex flex-wrap justify-center gap-15">
           {product.slice(0,3).map((product) => (
-            <FeaturedProductCard key={product.product_id} image={product.image}  name={product.name} price={product.price} />
+            <FeaturedProductCard key={product.product_id} product_id={product.product_id} image={product.image}  name={product.name} price={product.price} />
           ))}
           
           

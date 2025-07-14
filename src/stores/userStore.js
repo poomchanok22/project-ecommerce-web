@@ -7,10 +7,14 @@ const useUserStore = create(persist((set,get)=>({
   token: "",
   login: async (input) => {
     const rs = await authApi.post('/login', input)
+
     set({token: rs.data.accessToken, user: rs.data.user})
     return rs
   },
-  logout: ()=> set({token: "", user:null})
+  logout: ()=> {
+    set({token: "", user:null})
+    
+  }
   
 }),{
   name: "userStoreProject",
