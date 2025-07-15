@@ -11,7 +11,6 @@ function ProductCard({product_id, image, name, description, price, stock, }) {
 const hdlAddToCart = async () => {
   try {
     await addToCart(product_id, 1, token)
-    toast.success("เพิ่มสินค้าลงตะกร้าแล้ว")
   } catch (err) {
     toast.error("เกิดข้อผิดพลาดในการเพิ่มสินค้า")
     console.error(err)

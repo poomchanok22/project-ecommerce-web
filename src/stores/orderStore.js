@@ -41,6 +41,20 @@ const useOrderStore = create((set, get) => ({
       return null;
     }
   },
+  cancelOrder : async (order_id, token) => {
+    try {
+      const response = await axios.patch(
+      `http://localhost:8888/api/order/${order_id}`,
+      {},
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    get().loadOrders(token);
+    } catch (err) {
+      console.error("Error cancelling order:", err)
+    }
+  }
 }));
 
 export default useOrderStore;

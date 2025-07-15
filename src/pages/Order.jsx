@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import useOrderStore from "../stores/orderStore"
 import useUserStore from "../stores/userStore"
 import { format } from "date-fns"
+import useCartStore from "../stores/cartStore"
 
 function OrderPage() {
   const token = useUserStore(state => state.token)
@@ -10,6 +11,8 @@ function OrderPage() {
   const loadOrders = useOrderStore(state => state.loadOrders)
   const loading = useOrderStore(state => state.loading)
   const retryCheckout = useOrderStore(state => state.retryCheckout)
+  const cancelOrder = useOrderStore(state => state.cancelOrder)
+  const clearCart = useCartStore(state => state.clearCart)
 
   const handleRetryCheckout = async (order_id) => {
   const url = await retryCheckout(order_id, token);
@@ -19,6 +22,14 @@ function OrderPage() {
     window.location.href = url;
   }
 };
+
+const handleCancelOrder = async (order_id) => {
+  const confirmCancel = window.confirm("คุณต้องการยกเลิกคำสั่งซื้อนี้ใช่หรือไม่?");
+  if (!confirmCancel) return;
+  await cancelOrder(order_id, token);
+  clearCart()
+};
+
 
 
   useEffect(() => {
@@ -31,10 +42,12 @@ function OrderPage() {
     <div className="w-5xl mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">ประวัติคำสั่งซื้อ</h1>
 
-      {orders.length === 0 ? (
+      {orders.filter(order => order.status !== "CANCELLED").length === 0 ? (
         <p className="text-gray-500">ยังไม่มีคำสั่งซื้อ</p>
       ) : (
-        orders.map((order) => (
+        orders
+        .filter(order => order.status !== "CANCELLED")
+        .map((order) => (
           <div
             key={order.order_id}
             className="border rounded-xl shadow-md mb-6 p-4 bg-white"
@@ -74,13 +87,11 @@ function OrderPage() {
 
             {
               order.status === "PENDING" ? <div>
-              <button className="btn btn-outline">Cancel Order</button> 
+              <button className="btn btn-outline" onClick={()=> handleCancelOrder(order.order_id)}>Cancel Order</button> 
               </div> : ""
             }
           </div>
-            
-            
-            
+
           </div>
         ))
       )}

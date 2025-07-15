@@ -21,6 +21,28 @@ const currentProduct = useProductStore(state => state.currentProduct)
 
 const [isOpen, setIsOpen] = useState(false)
 const [isOpenProductForm, setIsOpenProductForm] = useState(false)
+const [selectCategory, setSelectCategory] = useState([])
+const [confirmDeleteCategory, setConfirmDeleteCategory] = useState(null)
+
+const openConfirmDelete = (category_id) => {
+  setConfirmDeleteCategory(category_id)
+  document.getElementById("confirm-delete-modal").showModal()
+}
+
+const handleCategoryChange = (categoryId) => {
+  setSelectCategory((prevSelected) => {
+    if(prevSelected.includes(categoryId)) {
+      return prevSelected.filter((category_id) => category_id !== categoryId)
+    } else {
+      return [...prevSelected, categoryId]
+    }
+  })
+}
+
+const filterProducts =
+  selectCategory.length === 0
+    ? product
+    : product.filter((product) => selectCategory.includes(product.category_id))
 
   useEffect(()=> {
     if(isOpen) {
@@ -62,11 +84,14 @@ const hdlDelete = async (category_id) => {
       {category.map((category)=>(
         <label key={category.category_id} className="flex items-center gap-3 p-3 mb-2 rounded-xl bg-white shadow-md cursor-pointer transition hover:shadow-lg hover:bg-[#f0e9dc]">
           <div className='flex items-center gap-3 flex-1'>
-            <input type="checkbox" className='checkbox checkbox-lg'/> 
+            <input type="checkbox"
+            checked={selectCategory.includes(category.category_id)}
+            onChange={() => handleCategoryChange(category.category_id)}
+            className='checkbox checkbox-lg'/> 
           <span className="text-base font-medium text-gray-800">{category.name}</span>
           </div>
           
-          <button className='btn btn-outline ml-auto' onClick={()=> hdlDelete(category.category_id)}>Delete</button>
+          <button className='btn btn-outline ml-auto' onClick={()=> openConfirmDelete(category.category_id)}>Delete</button>
         </label>
       ))}
       </div>
@@ -77,7 +102,7 @@ const hdlDelete = async (category_id) => {
       
       </div>
       <div className='flex-4/5 flex gap-10 flex-wrap mt-10 justify-center'>
-      {product.map((product)=>(
+      {filterProducts.map((product)=>(
         <ProductCardAdmin key={product.product_id} product={product} product_id={product.product_id} image={product.image} name={product.name} description={product.description} price={product.price} stock={product.stock}/>
       ))}
       
@@ -115,6 +140,35 @@ const hdlDelete = async (category_id) => {
       </div>
 
     </dialog>
+
+    <dialog id="confirm-delete-modal" className="modal" onClose={() => setConfirmDeleteCategory(null)}>
+  <div className="modal-box text-center">
+    <h3 className="font-bold text-lg mb-4">Are you sure you want to delete this category?</h3>
+    <div className="flex justify-center gap-4">
+      <button
+        className="btn btn-error"
+        onClick={() => {
+          hdlDelete(confirmDeleteCategory)
+          setConfirmDeleteCategory(null)
+          document.getElementById("confirm-delete-modal").close()
+        }}
+      >
+        Yes
+      </button>
+      <form method="dialog">
+        <button
+          className="btn"
+          onClick={() => setConfirmDeleteCategory(null)}
+        >
+          No
+        </button>
+      </form>
+    </div>
+  </div>
+</dialog>
+
+
+
     </>
   )
 }

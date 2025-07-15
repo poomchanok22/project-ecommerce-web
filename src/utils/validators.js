@@ -7,7 +7,7 @@ export const loginSchema = object({
 
 export const registerSchema = object({
   name: string().required('Name is required'),
-  age: number().min(20, 'Age must be greater than 20').required('Age is required'),
+  age: number().typeError("Age must be a number").min(20, 'Age must be greater than 20').required('Age is required'),
   email: string().email('Invalid email').required('Email is required'),
   password: string().min(4, 'Password must be at least 4 characters').required('Password is required'),
   confirmPassword: string()
