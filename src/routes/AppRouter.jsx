@@ -11,6 +11,7 @@ const Payment = lazy(()=> import("../pages/Payment"))
 const Order = lazy(()=> import("../pages/Order"))
 const ShopAdmin = lazy(() => import("../pages/ShopAdmin"))
 const PaymentSuccess = lazy(() => import("../pages/PaymentSuccessPage"))
+const ProductDetail = lazy(() => import("../pages/ProductDetail"))
 
 
 const guestRouter = createBrowserRouter([
@@ -24,6 +25,7 @@ const userRouter = createBrowserRouter([
     children: [
       {index: true, element: <Home />},
       {path: "shop", element:<Shop />},
+      {path: "product/:product_id",  element:<ProductDetail />},
       {path: "cart", element:<Cart />},
       {path: "payment", element:<Payment />},
       {path: "order", element:<Order />},

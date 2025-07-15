@@ -23,10 +23,11 @@ const handleCategoryChange = (categoryId) => {
   })
 }
 
-const filterProducts =
-  selectCategory.length === 0
+const filterProducts = Array.isArray(product)
+ ? (selectCategory.length === 0
     ? product
-    : product.filter((product) => selectCategory.includes(product.category_id))
+    : product.filter((product) => selectCategory.includes(product.category_id)))
+  : []
 
 useEffect(()=> {
   fetchProducts(token)

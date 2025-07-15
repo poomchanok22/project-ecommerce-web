@@ -2,6 +2,7 @@ import React from 'react'
 import useCartStore from '../stores/cartStore'
 import useUserStore from '../stores/userStore'
 import { toast } from 'react-toastify'
+import { Link } from 'react-router'
 
 
 function ProductCard({product_id, image, name, description, price, stock, }) {
@@ -35,9 +36,12 @@ const hdlAddToCart = async () => {
   </div>
 
   <div className="p-8">
+    <Link key={product_id} to={`/product/${product_id}`}>
     <h4 className="text-2xl font-bold uppercase mb-4 text-yellow-700 hover:text-yellow-400 transition">
       <p>{name}</p>
     </h4>
+    </Link>
+    
     <p className="text-sm leading-6 mb-4 text-gray-500">{description}</p>
     <div className="flex items-center justify-between border-t border-gray-200 pt-5">
       <div className="text-lg text-yellow-400 font-semibold">

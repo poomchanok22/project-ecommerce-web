@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import {createProduct, deleteProduct, getAllProduct, editProduct} from "../api/productsApi"
+import {createProduct, deleteProduct, getAllProduct, editProduct, getProductById} from "../api/productsApi"
 import useUserStore from "../stores/userStore"
 
 let token = useUserStore.getState().token
@@ -64,7 +64,21 @@ const useProductStore = create((set, get) => ({
     get().fetchProducts()
     return response
     
-  }
+  },
+
+  fetchSingleProduct: async (product_id, token) => {
+    set({loading:true, error:null})
+
+    try {
+      const response = await getProductById(product_id, token)
+      set({product: response.data.productById, loading: false})
+      
+    } catch (err) {
+      set({error: err.message, loading: false})
+    } finally {
+      set({ loading: false})
+    }
+  } 
 
 }))
 

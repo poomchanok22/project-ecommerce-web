@@ -10,7 +10,7 @@ const addToken = (token) => ({
 
 export const createProduct = (body, token) => productsApi.post("/", body, addToken(token))
 
-export const getProductById = (product_id) => productsApi.get(`/${product_id}`)
+export const getProductById = (product_id, token) => productsApi.get(`/${product_id}`, addToken(token))
 
 export const getAllProduct = (token) => productsApi.get("/", addToken(token))
 
